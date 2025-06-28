@@ -1,6 +1,7 @@
 local plr = game.Players.LocalPlayer
-
-for _,guis in plr.PlayerGui:GetDescendants() do
+local friendslist = {}
+local frdtrfs = true
+--[[for _,guis in plr.PlayerGui:GetDescendants() do
 	if guis.ClassName == 'Frame' or guis.ClassName == 'TextLabel' or guis.ClassName == 'ScrollingFrame' or guis.ClassName == 'ImageLabel' then
 		guis.BackgroundColor3 = Color3.new(0.333333, 0, 0)
 	elseif guis.ClassName == 'TextButton' or guis.ClassName == 'ImageButton' or guis.ClassName == 'TextBox' then
@@ -20,7 +21,7 @@ for _,guis in plr.PlayerGui:GetDescendants() do
 		guis.Font = Enum.Font.RobotoMono
 	end
 end
-
+]]
 local main = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 main.Name = "main"
@@ -94,6 +95,24 @@ button3i.TextScaled = true
 button3i.Parent = button1
 button3i.Size = UDim2.new(0.3,0,1,0)
 button3i.Position = UDim2.new(1.7,0,0,0)
+local button4i = Instance.new('TextButton')
+button4i.Text = 'Safe plr'
+button4i.Font = Enum.Font.RobotoMono
+button4i.BackgroundColor3 = Color3.new(0.333333, 1, 0.498039)
+button4i.BorderSizePixel = 0
+button4i.TextScaled = true
+button4i.Parent = button1
+button4i.Size = UDim2.new(0.3,0,1,0)
+button4i.Position = UDim2.new(2.1,0,0,0)
+local button5i = Instance.new('TextButton')
+button5i.Text = 'Del plr'
+button5i.Font = Enum.Font.RobotoMono
+button5i.BackgroundColor3 = Color3.new(0.333333, 1, 0.498039)
+button5i.BorderSizePixel = 0
+button5i.TextScaled = true
+button5i.Parent = button1
+button5i.Size = UDim2.new(0.3,0,1,0)
+button5i.Position = UDim2.new(2.1,0,1,0)
 local text = Instance.new('TextLabel')
 text.Text = '0'
 text.Font = Enum.Font.RobotoMono
@@ -109,7 +128,16 @@ game.StarterGui:SetCore('SendNotification',{Title = 'Loaded script';Text = 'SCRI
 
 function jailall()
 	for i,v in game.Players:GetChildren() do
-		if v.Name ~= plr.Name then
+		frdtrfs = true
+		if v.Name == plr.Name then
+		frdtrfs = false
+		end
+			for _, frd in friendslist do
+				if v.Name == frd then
+					frdtrfs = false
+				end
+			end
+		if frdtrfs == true then
 			game.ReplicatedStorage.JailPlayer:FireServer(v)
 		end
 		text.Text = i
@@ -175,15 +203,59 @@ end
 function lockall()
 	for spam = 1,1000 do
 	for i,v in game.Players:GetChildren() do
-		if v.Name ~= plr.Name then
-			game.ReplicatedStorage.JailPlayer:FireServer(v)
-		end
+			frdtrfs = true
+			if v.Name == plr.Name then
+				frdtrfs = false
+			end
+			for _, frd in friendslist do
+				if v.Name == frd then
+					frdtrfs = false
+				end
+			end
+			if frdtrfs == true then
+				game.ReplicatedStorage.JailPlayer:FireServer(v)
+			end
 	end
 	end
 end
-
+function safeplr()
+	for ppp,plrs in game.Players:GetChildren() do
+		if plrs.Name == button1.Text then
+			table.insert(friendslist,plrs.Name)	
+			text.Text = 1
+			game.StarterGui:SetCore('SendNotification',{Title = 'Player';Text = plrs.Name;Icon = 'http://www.roblox.com/asset/?id=11982227421';})
+		elseif plrs.DisplayName == button1.Text then
+			table.insert(friendslist,plrs.Name)
+			text.Text = 1
+			game.StarterGui:SetCore('SendNotification',{Title = 'Player';Text = plrs.DisplayName;Icon = 'http://www.roblox.com/asset/?id=11982227421';})
+		end
+	end
+	for _,checkfrd in friendslist do
+	print(checkfrd)
+	end
+	game:GetService('TweenService'):Create(text,TweenInfo.new(0.3,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,0,true,0.3),{TextColor3 = Color3.new(0,1,0)}):Play()
+	task.wait(1)
+	text.Text = 0
+end
+function deleteplr()
+			for frdnum,friend in friendslist do
+				if friend == button1.Text then
+					table.remove(friendslist,frdnum)
+				text.Text = 1
+			end
+			game.StarterGui:SetCore('SendNotification',{Title = 'Player';Text = button1.Text;Icon = 'http://www.roblox.com/asset/?id=11982227421';})
+			end
+	for _,checkfrd in friendslist do
+		warn(checkfrd)
+	end
+	game:GetService('TweenService'):Create(text,TweenInfo.new(0.3,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,0,true,0.3),{TextColor3 = Color3.new(0,1,0)}):Play()
+	task.wait(1)
+	text.Text = 0
+end
 button1i.Activated:Connect(jailplr)
 button2i.Activated:Connect(infjailplr)
 button3i.Activated:Connect(lockplr)
+button4i.Activated:Connect(safeplr)
+button5i.Activated:Connect(deleteplr)
 button.Activated:Connect(jailall)
 button2.Activated:Connect(lockall)

@@ -259,3 +259,90 @@ button4i.Activated:Connect(safeplr)
 button5i.Activated:Connect(deleteplr)
 button.Activated:Connect(jailall)
 button2.Activated:Connect(lockall)
+
+-- SIGN GUI
+
+local main1 = Instance.new("ScreenGui")
+local Frame1 = Instance.new("Frame")
+main1.Name = "main"
+main1.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+main1.IgnoreGuiInset = true
+main1.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+main1.ResetOnSpawn = false 
+
+Frame1.Parent = main
+Frame1.Position = UDim2.new(0.5,0,0.5,0)
+Frame1.Size = UDim2.new(0.1,0,0,0)
+Frame1.BackgroundColor3 = Color3.new(0.180392, 0.196078, 0.333333)
+Frame1.BorderColor3 = Color3.new(0, 1, 1)
+Frame1.BorderSizePixel = 0
+Frame1.Active = true
+Frame1.Draggable = true
+--local ui = Instance.new('UIListLayout',Frame)
+game:GetService('TweenService'):Create(Frame1,TweenInfo.new(1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Size = UDim2.new(0.1,0,0.25,0)}):Play()
+Frame1.BorderSizePixel = 3
+wait(1)
+local button0 = Instance.new('TextButton')
+button0.Text = 'Print all'
+button0.Font = Enum.Font.RobotoMono
+button0.BackgroundColor3 = Color3.new(0.341176, 0.513725, 0.666667)
+button0.BorderSizePixel = 0
+button0.TextScaled = true
+button0.Parent = Frame1
+button0.Size = UDim2.new(1,0,0.25,0)
+button0.Position = UDim2.new(0,0,0.25,0)
+local button01 = Instance.new('TextButton')
+button01.Text = 'Print plr'
+button01.Font = Enum.Font.RobotoMono
+button01.BackgroundColor3 = Color3.new(0.341176, 0.513725, 0.666667)
+button01.BorderSizePixel = 0
+button01.TextScaled = true
+button01.Parent = Frame1
+button01.Size = UDim2.new(1,0,0.25,0)
+button01.Position = UDim2.new(0,0,0,0)
+local text0 = Instance.new('TextBox')
+text0.Text = 'Your text'
+text0.Font = Enum.Font.RobotoMono
+text0.TextColor3 = Color3.new(0, 1, 1)
+text0.BackgroundTransparency = 1
+text0.BorderSizePixel = 0
+text0.TextScaled = true
+text0.Parent = Frame1
+text0.Size = UDim2.new(1,0,0.25,0)
+text0.Position = UDim2.new(0,0,0.5,0)
+
+
+function printplr ()
+	for ppp,plrs in game.Players:GetPlayers() do
+		if plrs.Name == button1.Text then
+			if plrs.Character:FindFirstChild('Sign') then
+			plrs.Character.Sign.UpdateSign:FireServer(text0.Text)
+			text.Text = 1
+			game.StarterGui:SetCore('SendNotification',{Title = 'Player';Text = plrs.Name;Icon = 'http://www.roblox.com/asset/?id=11982227421';})
+			else
+				game.StarterGui:SetCore('SendNotification',{Title = 'Error';Text = 'Sign not found!';Icon = 'http://www.roblox.com/asset/?id=11982227421';})
+			end
+		elseif plrs.DisplayName == button1.Text then
+			if plrs.Character:FindFirstChild('Sign') then
+				plrs.Character.Sign.UpdateSign:FireServer(text0.Text)
+				text.Text = 1
+				game.StarterGui:SetCore('SendNotification',{Title = 'Player';Text = plrs.Name;Icon = 'http://www.roblox.com/asset/?id=11982227421';})
+			else
+				game.StarterGui:SetCore('SendNotification',{Title = 'Error';Text = 'Sign not found!';Icon = 'http://www.roblox.com/asset/?id=11982227421';})
+			end
+		end
+	end
+end
+
+function printallplr ()
+	for ppp,plrs in game.Players:GetPlayers() do
+		if plrs.Character:FindFirstChild('Sign') then
+			plrs.Character.Sign.UpdateSign:FireServer(text0.Text)
+			text.Text = ppp
+		end
+	end
+	game:GetService('TweenService'):Create(text,TweenInfo.new(0.3,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,0,true,0.3),{TextColor3 = Color3.new(0,1,0)}):Play()
+end
+
+button0.Activated:Connect(printallplr)
+button01.Activated:Connect(printplr)

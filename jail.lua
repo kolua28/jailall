@@ -335,12 +335,14 @@ function printplr ()
 end
 
 function printallplr ()
+	local playerssss = 0
 	for ppp,plrs in game.Players:GetPlayers() do
 		if plrs.Character:FindFirstChild('Sign') then
 			plrs.Character.Sign.UpdateSign:FireServer(text0.Text)
-			text.Text = ppp
+			playerssss += 1
 		end
 	end
+	text.Text = playerssss
 	game:GetService('TweenService'):Create(text,TweenInfo.new(0.3,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,0,true,0.3),{TextColor3 = Color3.new(0,1,0)}):Play()
 end
 
